@@ -171,12 +171,17 @@ function lista_operacoes(tipo, quantidade, preco){
 	
 }
 
+function incrementa_trades(){
+	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
+}
+	
 function comprar(){
 
 	switch (true) {
 		case posicao == 0:
 			posicao = cash/precos[tick];
 			cash = 0;
+			incrementa_trades()
 			break;
 		
 		case posicao > 0:
@@ -185,9 +190,9 @@ function comprar(){
 		case posicao < 0:
 			cash -= (-posicao*precos[tick]);
 			posicao = 0;
+			incrementa_trades()
 			break;
 	}
-	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
 	atualiza_tela();
 }
 function vender(){
@@ -196,17 +201,18 @@ function vender(){
 		case posicao == 0:
 			posicao = -cash/precos[tick];
 			cash *= 2;
+			incrementa_trades()
 			break;
 		
 		case posicao > 0:
 			cash = posicao*precos[tick];
 			posicao = 0;
+			incrementa_trades()
 			break;
 		
 		case posicao < 0:
 			break;
 	}
-	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
 	atualiza_tela();
 }
 
