@@ -1,16 +1,15 @@
 <!doctype html>
 <html class="no-js" lang="">
 <head>
-  <meta charset="utf-8">
-  <title>Faria Limer Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <script src="d3.v7.min.js"></script>
-  <script src="norminv.js"></script>
+	  <meta charset="utf-8">
+	  <title>Faria Limer Game</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	  <script src="d3.v7.min.js"></script>
+	  <script src="norminv.js"></script>
 	<link rel="stylesheet" href="style.css" />  
 </head>
 <body>
 <div id="main">
-
 	<div id="ajuda" class="titulo laranja">FRLM3 Equity DES</div><div class="vermelho">&nbsp;</div>
 	<div>
 		<p>
@@ -76,20 +75,19 @@
 
 </div>
 <script>
-var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, });
-var q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
+var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }),
+	q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
 
-var refreshIntervalId;
-var tick = -1;
-let precos = [100];
-let cash = 100000;
-let posicao = 0;
-let pnl = 0;
-var rodadas = 60;
-var direcao = 0;
-var mercado = dir_mercado(Math.random());
-
-var cargos = ['Estagiário','Ponta-de-mesa','Trader Jr.']
+var refreshIntervalId,
+	tick = -1,
+	precos = [100],
+	cash = 100000,
+	posicao = 0,
+	pnl = 0,
+	rodadas = 60,
+	direcao = 0,
+	mercado = dir_mercado(Math.random()),
+	cargos = ['Estagiário','Ponta-de-mesa','Trader Jr.'];
 
 if(!localStorage.getItem('cargo')) {
 	salvarCargo();
@@ -334,9 +332,6 @@ function make_y_gridlines() { return d3.axisLeft(y).ticks(); }
 	.attr("height", height)
 	.style("fill", "#6E6E6E50")
 	.lower();
-	
-	
-	
 
 }
 </script>
