@@ -1,1 +1,477 @@
-Teste OK!
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title>Faria Limer Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+body {
+	font-family: Verdana;
+	background-color: #000000;
+	color: #FF9E2B;
+	font-weight: 500;
+	font-size: small;
+	touch-action: manipulation;
+}
+	svg { color: #000000; }
+	.laranja { background-color: #FF9E2B; color: #000000; padding: 2px; }
+	.vermelho { font-size: medium; background: linear-gradient(180deg, rgba(228,51,67,1) 0%, rgba(172,24,36,1) 50%, rgba(104,4,12,1) 100%); color: #ffffff; padding: 2px; text-align: right; margin-bottom: 1em;}
+	.titulo { float:left; width: 220px; margin-bottom: 1em; font-size: medium; }
+	td {
+		border-bottom: 1px solid #454545;
+		border-left: 1px solid #454545;
+		border-right: 1px solid #454545;
+	}
+	th { 
+		background-color: #404040;
+		color: #ffffff;
+		font-weight: 500;
+		border-top: 2px solid #6E6E6E;
+		border-left: 2px solid #6E6E6E;
+		background: linear-gradient(180deg, rgba(86,86,86,1) 0%, rgba(58,58,58,1) 50%, rgba(39,39,39,1) 100%);
+	}
+	td, th { text-align: right; padding: 2px; }
+	#info_mercado { width: 100%; margin-bottom: 1em;}
+	#info_posicao { width: 100%; margin-bottom: 2em;}
+	#operacoes { width: 100%; text-align:center; padding: 12px; }
+	table { border-collapse: collapse; margin-bottom: 1em; }
+	#main { max-width: 640px; margin: auto; }
+	button {
+		border-radius: 4px;
+		color: #ffffff;
+		width: 100px;
+		height: 32px;
+		background: rgb(172,170,180);
+		background: linear-gradient(180deg, rgba(172,170,180,1) 0%, rgba(132,132,141,1) 50%, rgba(94,93,97,1) 100%);
+	}
+	button:disabled,
+	button[disabled]{
+		color: #444444;
+	}
+	#grafico { width: 100%; height: 300px; }
+	#hdgrafico { width: 100%; height: 300px; }
+	#news { width: 100%; }
+		
+.axis { color: #d5d5d5; font-size: 14px;  }
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+li { margin-top: 0.5em; }
+i { font-weight: bold; }
+</style>
+</head>
+<body>
+<div id="main">
+
+	<div id="ajuda" class="titulo laranja">FRLM3 Equity DES</div><div class="vermelho">&nbsp;</div>
+	<div>
+		<p>
+			Regras do jogo:<br>
+			<ul>
+				<li>Você começa com R$ 10.000,00 <i>fictícios</i> para operar uma ação <i>simulada</i></li>
+				<li>Você pode operar comprado ou vendido</li>
+				<li>Faça o maior resultado que conseguir em 60 dias</li>
+				<li>Lembre-se que isto é apenas um JOGO, onde tudo é simulado, fictício, de mentira</li>
+				<li>Ganhe bastante dinheiro <i>(de mentira)</i> e suba de cargo <i>(também de mentira)</i></li>
+			</ul>
+			Cargos:
+			<ul>
+				<li><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</li>
+				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
+				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro já custa algum dinheiro. Não fica mais com cara de perdido quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
+			</ul>
+		</p>
+	</div>
+
+	<div id="titulo" class="titulo laranja">FRLM3 Equity Game</div><div class="vermelho">&nbsp;</div>
+	<table id="info_mercado">
+		<tr>
+			<th width="25%">Cargo</th>
+			<th width="25%">Pregão</th>
+			<th width="25%">Dia</th>
+			<th width="25%">Preço</th>
+		</tr>
+		<tr>
+			<td><span id="cargo">???</span></td>
+			<td><span id="state">Não iniciado</span></td>
+			<td><span id="tick">0</span>/60</td>
+			<td><span id="preco">100,00</span></td>
+		</tr>
+	</table>
+	<table id="hdgrafico">
+		<tr><th style="text-align:left;">Analysis Chart</th></tr>
+		<tr><td><div id="grafico"></div></td></tr>
+	</table>
+	
+	<div id="operacoes">
+		<button id="iniciar" onClick="iniciar_jogo();">1) Iniciar</button>
+		<button id="comprar" onClick="comprar();" disabled="disabled">Comprar</button>
+		<button id="vender"  onClick="vender();" disabled="disabled">Vender</button>
+	</div>	
+	<table id="info_posicao">
+		<tr>
+			<th width="40%">Saldo</th>
+			<th width="30%">Posição</th>
+			<th width="30%">PnL</th>
+		</tr>
+		<tr>
+			<td><span id="cash">10.000,00</span></td>
+			<td><span id="posicao">0</span></td>
+			<td><span id="pnl">0,00</span>
+		</tr>
+	</table>
+	
+	<!--
+	<div id="noticias" class="titulo laranja">TRDG3 Equity CN</div><div class="vermelho">&nbsp;</div>
+	<div id="news">blabla</div>
+	-->
+
+</div>
+<script>
+var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, });
+var q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
+
+var refreshIntervalId;
+var tick = -1;
+let precos = [100];
+let cash = 10000;
+let posicao = 0;
+let pnl = 0;
+var rodadas = 60;
+var direcao = 0;
+var mercado = dir_mercado(Math.random());
+
+var cargos = ['Estagiário','Ponta-de-mesa','Trader Jr.']
+
+if(!localStorage.getItem('cargo')) {
+	salvarCargo();
+} else {
+	calculaCargo();
+}
+
+function salvarCargo() {
+	localStorage.setItem('cargo', 2);
+	console.log('Cargo salvo.');
+	calculaCargo();
+}
+function calculaCargo(){
+	var cargo = localStorage.getItem('cargo');
+	out(cargos[cargo], 'cargo');
+}
+
+
+function iniciar_jogo(){
+
+	out("Em andamento", "state");
+
+	tick = -1;
+	precos = [100];
+	cash = 10000;
+	posicao = 0;
+	pnl = 0;
+	direcao = 0;
+	mercado = dir_mercado(Math.random());
+	console.log(mercado);
+
+	document.getElementById("iniciar").disabled = true;
+	document.getElementById("comprar").disabled = false;
+	document.getElementById("vender").disabled = false;
+
+	atualiza_posicao();
+	refreshIntervalId = setInterval(atualiza_posicao, 1000);
+		
+}
+
+function atualiza_posicao(){
+
+	monta_grafico();
+
+	tick++;
+	if(tick == rodadas) { finalizar_jogo(); }
+	
+	var rnd = Math.random();
+	var variacao = normsInv(rnd, mercado, 0.075);
+	var vchoque = choque(Math.random());
+	var novo_preco = (1+variacao)*precos[tick]*vchoque;
+	precos.push(novo_preco);
+	pnl = posicao * precos[tick] + cash - 10000;
+
+	if(pnl < -10000) {
+		alert("Você está com saldo negativo. Fim do jogo...");
+		localStorage.setItem('cargo', 0);
+		finalizar_jogo();
+	}
+
+	atualiza_tela();
+	
+}
+
+function atualiza_tela(){
+
+	out(tick, 'tick');
+	out(n.format(precos[tick]), "preco");
+	out(n.format(cash), "cash");
+	out(q.format(posicao), "posicao");
+	out(n.format(pnl), "pnl");
+
+}
+
+function lista_operacoes(tipo, quantidade, preco){
+
+	document.getElementById("lista_operacoes").innerHTML += tipo + " | " + quantidade + " | " + preco + "<br>";
+	
+}
+
+function comprar(){
+
+	switch (true) {
+		case posicao == 0:
+			posicao = cash/precos[tick];
+			cash = 0;
+			break;
+		
+		case posicao > 0:
+			break;
+		
+		case posicao < 0:
+			cash -= (-posicao*precos[tick]);
+			posicao = 0;
+			break;
+	}
+	atualiza_tela();
+}
+function vender(){
+
+	switch (true) {
+		case posicao == 0:
+			posicao = -cash/precos[tick];
+			cash *= 2;
+			break;
+		
+		case posicao > 0:
+			cash = posicao*precos[tick];
+			posicao = 0;
+			break;
+		
+		case posicao < 0:
+			break;
+	}
+	atualiza_tela();
+}
+
+function finalizar_jogo() {
+
+	calculaCargo();
+	monta_grafico();
+	atualiza_tela();
+	clearInterval(refreshIntervalId);
+	out("Encerrado", "state");
+	document.getElementById("iniciar").disabled = false;
+	document.getElementById("comprar").disabled = true;
+	document.getElementById("vender").disabled = true;
+	
+}
+
+function dir_mercado(prob){
+  if(prob < 0.1) return -0.015;
+  else if(prob < 0.9) return 0.02;
+  else return 0.035;
+}
+function choque(prob){
+  if(prob < 0.01) { console.log("choque queda"); return 0.75; }
+  else if(prob < 0.99) { return 1; }
+  else { console.log("choque alta"); return 1.3333; }
+}
+
+function out(valor, id){
+	document.getElementById(id).innerHTML = valor;
+}
+
+// Fonte: https://gist.github.com/kmpm/1211922/
+function normsInv(p, mu, sigma) {
+    if (p < 0 || p > 1) { throw "The probality p must be bigger than 0 and smaller than 1"; }
+    if (sigma < 0) { throw "The standard deviation sigma must be positive"; }
+    if (p == 0) { return -Infinity; }
+    if (p == 1) { return Infinity; }
+    if (sigma == 0) { return mu; }
+
+    var q, r, val;
+    q = p - 0.5;
+    if (Math.abs(q) <= .425)
+    {
+        r = .180625 - q * q;
+        val =
+               q * (((((((r * 2509.0809287301226727 +
+                          33430.575583588128105) * r + 67265.770927008700853) * r +
+                        45921.953931549871457) * r + 13731.693765509461125) * r +
+                      1971.5909503065514427) * r + 133.14166789178437745) * r +
+                    3.387132872796366608)
+               / (((((((r * 5226.495278852854561 +
+                        28729.085735721942674) * r + 39307.89580009271061) * r +
+                      21213.794301586595867) * r + 5394.1960214247511077) * r +
+                    687.1870074920579083) * r + 42.313330701600911252) * r + 1);
+    }
+    else
+    {
+        if (q > 0)
+            r = 1 - p;
+        else
+            r = p;
+        r = Math.sqrt(-Math.log(r));
+
+        if (r <= 5)
+        {
+            r += -1.6;
+            val = (((((((r * 7.7454501427834140764e-4 +
+                       .0227238449892691845833) * r + .24178072517745061177) *
+                     r + 1.27045825245236838258) * r +
+                    3.64784832476320460504) * r + 5.7694972214606914055) *
+                  r + 4.6303378461565452959) * r +
+                 1.42343711074968357734)
+                / (((((((r *
+                         1.05075007164441684324e-9 + 5.475938084995344946e-4) *
+                        r + .0151986665636164571966) * r +
+                       .14810397642748007459) * r + .68976733498510000455) *
+                     r + 1.6763848301838038494) * r +
+                    2.05319162663775882187) * r + 1);
+        }
+        else
+        {
+            r += -5;
+            val = (((((((r * 2.01033439929228813265e-7 +
+                       2.71155556874348757815e-5) * r +
+                      .0012426609473880784386) * r + .026532189526576123093) *
+                    r + .29656057182850489123) * r +
+                   1.7848265399172913358) * r + 5.4637849111641143699) *
+                 r + 6.6579046435011037772)
+                / (((((((r *
+                         2.04426310338993978564e-15 + 1.4215117583164458887e-7) *
+                        r + 1.8463183175100546818e-5) * r +
+                       7.868691311456132591e-4) * r + .0148753612908506148525)
+                     * r + .13692988092273580531) * r +
+                    .59983220655588793769) * r + 1);
+        }
+
+        if (q < 0.0)
+        {
+            val = -val;
+        }
+    }
+
+    return mu + sigma * val;
+}
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+function monta_grafico(){
+	
+	document.getElementById("grafico").innerHTML = "";
+
+	var data = [];
+	
+	for (let i = 0; i <= rodadas; i++) {
+		var date = new Date();
+		var ponto = {};
+		dia = date.addDays(i);//.toISOString().slice(0, 10);
+		ponto.date = dia;
+		ponto.close = precos[i];
+		data.push(ponto);
+	} 
+
+	// set the dimensions and margins of the graph
+	var margin = {top: 10, right: 10, bottom: 30, left: 40},
+		width = document.getElementById("grafico").clientWidth - margin.left - margin.right,
+		height = document.getElementById("grafico").clientHeight - margin.top - margin.bottom;
+
+	// parse the date / time
+	var parseTime = d3.timeParse("%Y-%m-%d");
+
+	// set the ranges
+	var x = d3.scaleTime().range([0, width]);
+	var y = d3.scaleLinear().range([height, 0]);
+
+	// define the line
+	var valueline = d3.line()
+		.x(function(d) { return x(d.date); })
+		.y(function(d) { return y(d.close); });
+
+	var svg = d3.select("#grafico").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+		.attr("transform",
+			  "translate(" + margin.left + "," + margin.top + ")");
+
+	  // Scale the range of the data
+	  x.domain(d3.extent(data, function(d) { return d.date; }));
+	  //y.domain([0, d3.max(data, function(d) { return d.close; })]);//.nice();
+		y.domain([0, d3.max(data, function(d) { return d.close > 200 ? d.close : 200; })]).nice();
+		
+	  // Add the valueline path.
+	  svg.append("path")
+		  .data([data])
+		  .attr("class", "line")
+		  .attr("d", valueline);
+
+
+
+	  // Add the Y Axis
+	  svg.append("g")
+		  .attr("class", "axis")
+		  .call(d3.axisLeft(y));
+	
+// gridlines in y axis function
+function make_y_gridlines() { return d3.axisLeft(y).ticks(); }
+	
+  // add the Y gridlines
+  svg.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
+		.style("stroke-dasharray", ("3, 3"))
+		.lower();;
+	
+		  // Add the X Axis
+	  svg.append("g")
+		  .attr("class", "axis")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(d3.axisBottom(x)
+				  .tickFormat(d3.timeFormat("%d/%m")))
+		  .selectAll("text")	
+			.style("text-anchor", "center")
+			.attr("dx", "0em")
+			.attr("dy", "1em");
+	
+	svg.append("rect")
+	.attr("x", 0)
+	.attr("y", 0)
+	.attr("width", width)
+	.attr("height", height)
+	.style("fill", "#6E6E6E50")
+	.lower();
+	
+	
+	
+
+}
+</script>
+
+
+</body>
+</html>
