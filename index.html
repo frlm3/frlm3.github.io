@@ -80,7 +80,7 @@ i { font-weight: bold; }
 		<p>
 			Regras do jogo:<br>
 			<ul>
-				<li>Você começa com R$ 10.000,00 <i>fictícios</i> para operar uma ação <i>simulada</i></li>
+				<li>Você começa com R$ 100.000,00 <i>fictícios</i> para operar uma ação <i>simulada</i></li>
 				<li>Você pode operar comprado ou vendido</li>
 				<li>Faça o maior resultado que conseguir em 60 dias</li>
 				<li>Lembre-se que isto é apenas um JOGO, onde tudo é simulado, fictício, de mentira</li>
@@ -90,7 +90,7 @@ i { font-weight: bold; }
 			<ul>
 				<li><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</li>
 				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
-				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro já custa algum dinheiro. Não fica mais com cara de perdido quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
+				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdida quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
 			</ul>
 		</p>
 	</div>
@@ -146,7 +146,7 @@ var q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFracti
 var refreshIntervalId;
 var tick = -1;
 let precos = [100];
-let cash = 10000;
+let cash = 100000;
 let posicao = 0;
 let pnl = 0;
 var rodadas = 60;
@@ -178,7 +178,7 @@ function iniciar_jogo(){
 
 	tick = -1;
 	precos = [100];
-	cash = 10000;
+	cash = 100000;
 	posicao = 0;
 	pnl = 0;
 	direcao = 0;
@@ -206,9 +206,9 @@ function atualiza_posicao(){
 	var vchoque = choque(Math.random());
 	var novo_preco = (1+variacao)*precos[tick]*vchoque;
 	precos.push(novo_preco);
-	pnl = posicao * precos[tick] + cash - 10000;
+	pnl = posicao * precos[tick] + cash - 100000;
 
-	if(pnl < -10000) {
+	if(pnl < -100000) {
 		alert("Você está com saldo negativo. Fim do jogo...");
 		localStorage.setItem('cargo', 0);
 		finalizar_jogo();
@@ -285,14 +285,19 @@ function finalizar_jogo() {
 }
 
 function dir_mercado(prob){
-  if(prob < 0.1) return -0.015;
-  else if(prob < 0.9) return 0.02;
-  else return 0.035;
+	
+  	if(prob < 0.1) 	return -0.015;
+   else if(prob < 0.9) 	return  0.020;
+   else			return  0.035;
+	
 }
+
 function choque(prob){
-  if(prob < 0.01) { console.log("choque queda"); return 0.75; }
-  else if(prob < 0.99) { return 1; }
-  else { console.log("choque alta"); return 1.3333; }
+	
+	if(prob < 0.01) return 0.7500;
+   else if(prob < 0.99) return 1.0000;
+   else 		return 1.3333;
+
 }
 
 function out(valor, id){
@@ -314,7 +319,7 @@ function monta_grafico(){
 	for (let i = 0; i <= rodadas; i++) {
 		var date = new Date();
 		var ponto = {};
-		dia = date.addDays(i);//.toISOString().slice(0, 10);
+		dia = date.addDays(i);
 		ponto.date = dia;
 		ponto.close = precos[i];
 		data.push(ponto);
