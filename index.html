@@ -187,7 +187,7 @@ function comprar(){
 			posicao = 0;
 			break;
 	}
-	localStorage.setItem('operacoes', localStorage.getItem('operacoes')+1);
+	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
 	atualiza_tela();
 }
 function vender(){
@@ -206,7 +206,7 @@ function vender(){
 		case posicao < 0:
 			break;
 	}
-	localStorage.setItem('operacoes', localStorage.getItem('operacoes')+1);
+	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
 	atualiza_tela();
 }
 
