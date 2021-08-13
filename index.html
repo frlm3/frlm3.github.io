@@ -24,6 +24,7 @@
 			Cargos:
 			<ul>
 				<li><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</li>
+				<label for="file">Operações boletadas:</label> <progress id="p_estag" value="0" max="100"></progress>
 				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
 				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdida quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
 			</ul>
@@ -90,22 +91,31 @@ var refreshIntervalId,
 	cargos = ['Estagiário','Ponta-de-mesa','Trader Jr.'];
 
 if(!localStorage.getItem('cargo')) {
-	salvarCargo();
+	iniciaStorage();
 } else {
 	calculaCargo();
 }
 
-function salvarCargo() {
+function iniciaStorage() {
 	localStorage.setItem('cargo', 0);
-	localStorage.setItem('cargo_incial', 0);
 	localStorage.setItem('operacoes', 0);
-	console.log('Cargo salvo.');
+	localStorage.setItem('dias_ponta', 0);
+	localStorage.setItem('dias_total', 0);
 	calculaCargo();
 }
 function calculaCargo(){
-	var cargo = localStorage.getItem('cargo');
-	
-	out(cargos[cargo], 'cargo');
+	var cargo_atual = parseInt(localStorage.getItem('cargo'));
+
+	switch (true) {
+		case cargo_atual == 0: // Estagiário
+			if(parseInt(localStorage.getItem('operacoes')) > 99){
+				cargo_atual = 1;
+			}
+			break;
+	}
+
+	localStorage.setItem('cargo', cargo_atual);
+	out(cargos[cargo_atual], 'cargo');
 }
 
 
@@ -113,6 +123,10 @@ function iniciar_jogo(){
 
 	out("Em andamento", "state");
 
+	if(parseInt(localStorage.getItem('cargo')) == 1){
+		incrementa_storage('dias_ponta');
+	}
+	incrementa_storage('dias_total');
 	tick = -1;
 	precos = [100];
 	cash = 100000;
@@ -145,18 +159,23 @@ function atualiza_posicao(){
 	precos.push(novo_preco);
 	pnl = posicao * precos[tick] + cash - 100000;
 
-	if(pnl < -100000) {
-		alert("Você está com saldo negativo. Fim do jogo...");
-		localStorage.setItem('cargo', 0);
-		finalizar_jogo();
-	}
-
+	if(pnl < -100000) { stop_loss(); }
 	atualiza_tela();
 	
 }
 
+function stop_loss(){
+	alert("Seu stop loss foi acionado! Cuidados com as posições vendidas...");
+	localStorage.setItem('cargo', 0);
+	localStorage.setItem('operacoes', 0);
+	localStorage.setItem('dias_ponta', 0);
+	localStorage.setItem('dias_total', 0);
+	finalizar_jogo();
+}
+
 function atualiza_tela(){
 
+	document.getElementById("p_estag").value = localStorage.getItem('operacoes');
 	out(tick, 'tick');
 	out(n.format(precos[tick]), "preco");
 	out(n.format(cash), "cash");
@@ -165,14 +184,8 @@ function atualiza_tela(){
 
 }
 
-function lista_operacoes(tipo, quantidade, preco){
-
-	document.getElementById("lista_operacoes").innerHTML += tipo + " | " + quantidade + " | " + preco + "<br>";
-	
-}
-
-function incrementa_trades(){
-	localStorage.setItem('operacoes', parseInt(localStorage.getItem('operacoes'))+1);
+function incrementa_storage(chave){
+	localStorage.setItem(chave, parseInt(localStorage.getItem(chave))+1);
 }
 	
 function comprar(){
@@ -181,7 +194,7 @@ function comprar(){
 		case posicao == 0:
 			posicao = cash/precos[tick];
 			cash = 0;
-			incrementa_trades()
+			incrementa_storage('operacoes');
 			break;
 		
 		case posicao > 0:
@@ -190,7 +203,7 @@ function comprar(){
 		case posicao < 0:
 			cash -= (-posicao*precos[tick]);
 			posicao = 0;
-			incrementa_trades()
+			incrementa_storage('operacoes');
 			break;
 	}
 	atualiza_tela();
@@ -201,13 +214,13 @@ function vender(){
 		case posicao == 0:
 			posicao = -cash/precos[tick];
 			cash *= 2;
-			incrementa_trades()
+			incrementa_storage('operacoes');
 			break;
 		
 		case posicao > 0:
 			cash = posicao*precos[tick];
 			posicao = 0;
-			incrementa_trades()
+			incrementa_storage('operacoes');
 			break;
 		
 		case posicao < 0:
