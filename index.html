@@ -30,6 +30,7 @@
 				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
 				<label for="p_ponta">Pregões no cargo:</label> <progress id="p_ponta"></progress>
 				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdida quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
+				<label for="p_trdjr">Lucro total:</label> <progress id="p_trdjr"></progress>
 			</ul>
 		</p>
 	</div>
@@ -137,18 +138,9 @@ function atualiza_posicao(){
 	precos.push(novo_preco);
 	pnl = posicao * precos[tick] + cash - 100000;
 
-	if(pnl < -100000) { stop_loss(); }
+	if(pnl < -100000) { jogo.stop_loss(); }
 	atualiza_tela();
 	
-}
-
-function stop_loss(){
-	alert("Seu stop loss foi acionado! Cuidados com as posições vendidas...");
-	localStorage.setItem('cargo', 0);
-	localStorage.setItem('operacoes', 0);
-	localStorage.setItem('dias_ponta', 0);
-	localStorage.setItem('dias_total', 0);
-	finalizar_jogo();
 }
 
 function atualiza_tela(){
@@ -209,6 +201,9 @@ function vender(){
 
 function finalizar_jogo() {
 	
+	if(parseInt(localStorage.getItem('cargo')) == 2 && pnl > 0){
+		localStorage.setItem('lucro_trdjr', parseFloat(localStorage.getItem('lucro_trdjr'))+pnl);
+	}
 	jogo.calcular_cargo();
 	monta_grafico();
 	atualiza_tela();

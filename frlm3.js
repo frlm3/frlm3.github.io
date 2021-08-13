@@ -2,13 +2,25 @@
 
 
 
-		ALERTA: Ao acessar este documento, você foi condenado por INSIDER INFORMATION
-		Volte ao carga de Estagiário quando retornar ao jogo.
-
-
+		ALERTA: Ao acessar este documento,
+		você foi condenado por INSIDER INFORMATION
 
 
 */
+var dev_tools = {
+	
+	reset: function(){
+		localStorage.setItem('cargo', 0);
+		localStorage.setItem('operacoes', 0);
+		localStorage.setItem('dias_ponta', 0);
+		localStorage.setItem('dias_total', 0);
+		localStorage.setItem('lucro_trdjr', 0);
+		jogo.calcular_cargo();
+	}
+	
+
+}
+
 
 var jogo = {
 
@@ -30,17 +42,20 @@ var jogo = {
 			localStorage.setItem('operacoes', 0);
 			localStorage.setItem('dias_ponta', 0);
 			localStorage.setItem('dias_total', 0);
-			this.calcular_cargo();
+			localStorage.setItem('lucro_trdjr', 0);
+			jogo.calcular_cargo();
 		} else {
-			this.calcular_cargo();
+			jogo.calcular_cargo();
 		}
 	},
 	
 	atualizar_barras_progresso: function () {
 		document.getElementById("p_estag").value = localStorage.getItem('operacoes');
-		document.getElementById("p_estag").max = this.metas.estag;
+		document.getElementById("p_estag").max = jogo.metas.estag;
 		document.getElementById("p_ponta").value = localStorage.getItem('dias_ponta');
-		document.getElementById("p_ponta").max = this.metas.ponta;
+		document.getElementById("p_ponta").max = jogo.metas.ponta;
+		document.getElementById("p_trdjr").value = parseInt(localStorage.getItem('lucro_trdjr'));
+		document.getElementById("p_trdjr").max = jogo.metas.trd_jr;
 	},
 	
 	calcular_cargo: function () {
@@ -61,6 +76,17 @@ var jogo = {
 		}
 		localStorage.setItem('cargo', cargo_atual);
 		out(jogo.cargos[cargo_atual], 'cargo');
+		
+	},
+	
+	stop_loss: function () {
+		
+		alert("Seu stop loss foi acionado! Cuidados com as posições vendidas...");
+		localStorage.setItem('cargo', 0);
+		localStorage.setItem('operacoes', 0);
+		localStorage.setItem('dias_ponta', 0);
+		localStorage.setItem('dias_total', 0);
+		finalizar_jogo();
 		
 	}
 	
