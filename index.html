@@ -26,11 +26,23 @@
 			Cargos:
 			<ul>
 				<li><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</li>
-				<label for="p_estag">Operações boletadas:</label> <progress id="p_estag"></progress>
+				<p class="progresso"><label for="p_estag">Operações boletadas:</label> <progress id="p_estag"></progress></p>
+				
 				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
-				<label for="p_ponta">Pregões no cargo:</label> <progress id="p_ponta"></progress>
+				<p class="progresso"><label for="p_ponta">Pregões:</label> <progress id="p_ponta"></progress></p>
+				
 				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdida quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
-				<label for="p_trdjr">Lucro total:</label> <progress id="p_trdjr"></progress>
+				<p class="progresso"><label for="p_trdjr">Lucro total:</label> <progress id="p_trdjr"></progress></p>
+				
+				<li><b>Trader Sr.</b>: Agora que você aprendeu a ganhar dinheiro, tem que aprender a perder dinheiro... Só assim você vai subir na carreira.</li>
+				<p class="progresso"><label for="p_trdsr">Prejuízo total:</label> <progress id="p_trdsr"></progress></p>
+				
+				<li><b>Head Trader</b>: </li>
+				<p class="progresso"><label for="p_head">Meta:</label> <progress id="p_head"></progress></p>
+				
+				<li><b>VP</b>: </li>
+				<p class="progresso"><label for="p_head">Meta:</label> <progress id="p_head"></progress></p>
+	
 			</ul>
 		</p>
 	</div>
@@ -203,6 +215,9 @@ function finalizar_jogo() {
 	
 	if(parseInt(localStorage.getItem('cargo')) == 2 && pnl > 0){
 		localStorage.setItem('lucro_trdjr', parseFloat(localStorage.getItem('lucro_trdjr'))+pnl);
+	}
+	if(parseInt(localStorage.getItem('cargo')) == 3 && pnl < 0){
+		localStorage.setItem('lucro_trdsr', parseFloat(localStorage.getItem('lucro_trdsr'))-pnl);
 	}
 	jogo.calcular_cargo();
 	monta_grafico();

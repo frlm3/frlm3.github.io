@@ -15,6 +15,7 @@ var dev_tools = {
 		localStorage.setItem('dias_ponta', 0);
 		localStorage.setItem('dias_total', 0);
 		localStorage.setItem('lucro_trdjr', 0);
+		localStorage.setItem('lucro_trdsr', 0);
 		jogo.calcular_cargo();
 	}
 	
@@ -27,7 +28,8 @@ var jogo = {
 	metas: {
 		estag: 50,
 		ponta: 12,
-		trd_jr: 1000000
+		trd_jr: 1000000,
+		trd_sr: 2500000
 	},
 	
 	cargos: [
@@ -43,6 +45,7 @@ var jogo = {
 			localStorage.setItem('dias_ponta', 0);
 			localStorage.setItem('dias_total', 0);
 			localStorage.setItem('lucro_trdjr', 0);
+			localStorage.setItem('lucro_trdsr', 0);
 			jogo.calcular_cargo();
 		} else {
 			jogo.calcular_cargo();
@@ -56,6 +59,8 @@ var jogo = {
 		document.getElementById("p_ponta").max = jogo.metas.ponta;
 		document.getElementById("p_trdjr").value = parseInt(localStorage.getItem('lucro_trdjr'));
 		document.getElementById("p_trdjr").max = jogo.metas.trd_jr;
+		document.getElementById("p_trdsr").value = parseInt(localStorage.getItem('lucro_trdsr'));
+		document.getElementById("p_trdsr").max = jogo.metas.trd_sr;
 	},
 	
 	calcular_cargo: function () {
