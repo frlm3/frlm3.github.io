@@ -1,12 +1,9 @@
 /*
-
-
-
-		ALERTA: Ao acessar este documento,
-		você foi condenado por INSIDER INFORMATION
-
-
+		INSIDER INFORMATION
 */
+var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }),
+	q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
+	
 var dev_tools = {
 	
 	reset: function(){
@@ -19,9 +16,7 @@ var dev_tools = {
 		jogo.calcular_cargo();
 	}
 	
-
 }
-
 
 var jogo = {
 
@@ -53,14 +48,27 @@ var jogo = {
 	},
 	
 	atualizar_barras_progresso: function () {
-		document.getElementById("p_estag").value = localStorage.getItem('operacoes');
+		
+		// Número de operações realizadas
+		var num_ope = localStorage.getItem('operacoes');
+		document.getElementById("p_estag").value = num_ope;
 		document.getElementById("p_estag").max = jogo.metas.estag;
-		document.getElementById("p_ponta").value = localStorage.getItem('dias_ponta');
+		out(num_ope, "num_ope");
+
+		// Outros
+		var num_preg = localStorage.getItem('dias_ponta');
+		document.getElementById("p_ponta").value = num_preg;
 		document.getElementById("p_ponta").max = jogo.metas.ponta;
-		document.getElementById("p_trdjr").value = parseInt(localStorage.getItem('lucro_trdjr'));
+		out(num_preg, "num_preg");
+		
+		var lucro_total = parseInt(localStorage.getItem('lucro_trdjr'));
+		document.getElementById("p_trdjr").value = lucro_total;
 		document.getElementById("p_trdjr").max = jogo.metas.trd_jr;
+		out(q.format(lucro_total/1000), "lucro_total");
+		
 		document.getElementById("p_trdsr").value = parseInt(localStorage.getItem('lucro_trdsr'));
 		document.getElementById("p_trdsr").max = jogo.metas.trd_sr;
+		
 	},
 	
 	calcular_cargo: function () {

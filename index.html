@@ -15,36 +15,52 @@
 	
 	<div id="ajuda" class="titulo laranja">FRLM3 Equity DES</div><div class="vermelho">&nbsp;</div>
 	<div>
-		<p>Regras do jogo:<br>
-			<ul>
-				<li>Você começa com R$ 100.000,00 <i>fictícios</i> para operar uma ação <i>simulada</i></li>
-				<li>Você pode operar comprado ou vendido</li>
-				<li>Faça o maior resultado que conseguir em 60 dias</li>
-				<li>Lembre-se que isto é apenas um JOGO, onde tudo é simulado, fictício, de mentira</li>
-				<li>Ganhe bastante dinheiro <i>(de mentira)</i> e suba de cargo <i>(também de mentira)</i></li>
-			</ul>
-			Cargos:
-			<ul>
-				<li><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</li>
-				<p class="progresso"><label for="p_estag">Operações boletadas:</label> <progress id="p_estag"></progress></p>
-				
-				<li><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader.</li>
-				<p class="progresso"><label for="p_ponta">Pregões:</label> <progress id="p_ponta"></progress></p>
-				
-				<li><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdida quando alguém diz que ficou tomado em bola 45 e dado em faca 26.</li>
-				<p class="progresso"><label for="p_trdjr">Lucro total:</label> <progress id="p_trdjr"></progress></p>
-				
-				<li><b>Trader Sr.</b>: Agora que você aprendeu a ganhar dinheiro, tem que aprender a perder dinheiro... Só assim você vai subir na carreira.</li>
-				<p class="progresso"><label for="p_trdsr">Prejuízo total:</label> <progress id="p_trdsr"></progress></p>
-				
-				<li><b>Head Trader</b>: </li>
-				<p class="progresso"><label for="p_head">Meta:</label> <progress id="p_head"></progress></p>
-				
-				<li><b>VP</b>: </li>
-				<p class="progresso"><label for="p_head">Meta:</label> <progress id="p_head"></progress></p>
-	
-			</ul>
-		</p>
+		<table id="regras">
+			<tr>
+				<th>Regras do jogo</th>
+			</tr>
+			<tr>
+				<td>
+					<ul>
+						<li>Você começa com R$ 100.000,00 <i>fictícios</i> para operar uma ação <i>simulada</i></li>
+						<li>Você pode operar comprado ou vendido</li>
+						<li>Faça o maior resultado que conseguir em 60 dias</li>
+						<li>Lembre-se que isto é apenas um JOGO, onde tudo é simulado, fictício, de mentira</li>
+						<li>Ganhe bastante dinheiro <i>(de mentira)</i> e suba de cargo <i>(também de mentira)</i></li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+
+		<table id="carreira">
+			<tr>
+				<th colspan="2">Carreira</th>
+			</tr>
+			<tr>
+				<td><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</td>
+				<td class="meta">Boletas batidas: <span id="num_ope">0</span><br><progress id="p_estag"></progress></td>
+			</tr>
+			<tr>
+				<td><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader, mas para isso deverá acumular experiência no mercado.</td>
+				<td class="meta">Pregões: <span id="num_preg">0</span><br><progress id="p_ponta"></progress></td>
+			</tr>
+			<tr>
+				<td><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdido quando alguém diz que ficou tomado em bola 45 e dado em faca 26. Ganhe um trocado para fazer nome no mercado.</td>
+				<td class="meta">Lucro total: <span id="lucro_total">0</span>k<br><progress id="p_trdjr"></progress></td>
+			</tr>
+			<tr>
+				<td><b>Trader Sr.</b>: Agora que você aprendeu a ganhar dinheiro, tem que aprender a perder dinheiro... Só assim você vai subir na carreira.</td>
+				<td class="meta"><label for="p_trdsr">Prejuízo total:</label> <progress id="p_trdsr"></progress>
+			</tr>
+			<tr>
+				<td><b>Head Trader</b>: Ganhar e perder é coisa de Trader. Para ser um Head Trader, você precisa ser eficiente. Dobre seu dinheiro em um pregão.</td>
+				<td class="meta"><label for="p_head">Lucro em um jogo:</label> <progress id="p_head"></progress>
+			</tr>
+			<tr>
+				<td><b>VP</b>: "Sell Me This Pen." Você chegou ao cargo máximo do FRLM3. Compartilhe seu PnL para todo mundo saber que você é TOPZEIRA.</td>
+				<td class="meta"></td>
+			</tr>
+		</table>
 	</div>
 
 	<div id="titulo" class="titulo laranja">FRLM3 Equity Game</div><div class="vermelho">&nbsp;</div>
@@ -65,7 +81,7 @@
 	<table id="info_posicao">
 		<tr>
 			<th width="40%">Saldo</th>
-			<th width="30%">Posição</th>
+			<th width="30%">Quantidade</th>
 			<th width="30%">PnL</th>
 		</tr>
 		<tr>
@@ -75,7 +91,7 @@
 		</tr>
 	</table>
 	<table id="hdgrafico">
-		<tr><th style="text-align:left;">Analysis Chart</th></tr>
+		<tr><th style="text-align:left;">Preço FRLM3</th></tr>
 		<tr><td><div id="grafico"></div></td></tr>
 	</table>
 	
@@ -85,20 +101,12 @@
 		<button id="vender"  onClick="vender();" disabled="disabled">Vender</button>
 	</div>	
 
-	
-	<!--
-	<div id="noticias" class="titulo laranja">TRDG3 Equity CN</div><div class="vermelho">&nbsp;</div>
-	<div id="news">blabla</div>
-	-->
-
 </div>
 <script>
 jogo.inicia_storage();
 jogo.atualizar_barras_progresso();
 
 
-var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }),
-	q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
 
 var refreshIntervalId,
 	tick = -1,
@@ -114,7 +122,7 @@ function iniciar_jogo(){
 
 	out("Em andamento", "state");
 
-	if(parseInt(localStorage.getItem('cargo')) == 1){
+	if(parseInt(localStorage.getItem('cargo')) > 0){
 		incrementa_storage('dias_ponta');
 	}
 	incrementa_storage('dias_total');
