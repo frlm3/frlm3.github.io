@@ -13,6 +13,7 @@ var dev_tools = {
 		localStorage.setItem('dias_total', 0);
 		localStorage.setItem('lucro_trdjr', 0);
 		localStorage.setItem('lucro_trdsr', 0);
+		localStorage.setItem('lucro_head', 0);
 		jogo.calcular_cargo();
 	}
 	
@@ -22,15 +23,18 @@ var jogo = {
 
 	metas: {
 		estag: 50,
-		ponta: 12,
+		ponta: 9,
 		trd_jr: 1000000,
-		trd_sr: 2500000
+		trd_sr: 2500000,
+		head: 100000
 	},
 	
 	cargos: [
 		'Estagiário',
 		'Ponta-de-mesa',
-		'Trader Jr.'
+		'Trader Jr.',
+		'Trader Sr.',
+		'Head Trader'
 	],
 	
 	inicia_storage: function () {
@@ -41,6 +45,7 @@ var jogo = {
 			localStorage.setItem('dias_total', 0);
 			localStorage.setItem('lucro_trdjr', 0);
 			localStorage.setItem('lucro_trdsr', 0);
+			localStorage.setItem('lucro_head', 0);
 			jogo.calcular_cargo();
 		} else {
 			jogo.calcular_cargo();
@@ -55,20 +60,27 @@ var jogo = {
 		document.getElementById("p_estag").max = jogo.metas.estag;
 		out(num_ope, "num_ope");
 
-		// Outros
+		// Número de pregões
 		var num_preg = localStorage.getItem('dias_ponta');
 		document.getElementById("p_ponta").value = num_preg;
 		document.getElementById("p_ponta").max = jogo.metas.ponta;
 		out(num_preg, "num_preg");
 		
+		// Lucro Total
 		var lucro_total = parseInt(localStorage.getItem('lucro_trdjr'));
 		document.getElementById("p_trdjr").value = lucro_total;
 		document.getElementById("p_trdjr").max = jogo.metas.trd_jr;
 		out(q.format(lucro_total/1000), "lucro_total");
 		
-		document.getElementById("p_trdsr").value = parseInt(localStorage.getItem('lucro_trdsr'));
+		// Prejuízo total
+		var prejuizo_total = parseInt(localStorage.getItem('lucro_trdsr'));
+		document.getElementById("p_trdsr").value = prejuizo_total;
 		document.getElementById("p_trdsr").max = jogo.metas.trd_sr;
+		out(q.format(prejuizo_total/1000), "prejuizo_total");
 		
+		var lucro_max = parseInt(localStorage.getItem('lucro_head'));
+		document.getElementById("p_head").value = lucro_max;
+		document.getElementById("p_head").max = jogo.metas.head;
 	},
 	
 	calcular_cargo: function () {
@@ -101,6 +113,15 @@ var jogo = {
 		localStorage.setItem('dias_total', 0);
 		finalizar_jogo();
 		
+	},
+	
+	choque: function (prob) {
+	
+			 if(prob < 0.02) return 0.7500;
+		else if(prob < 0.98) return 1.0000;
+		else				 return 1.3333;
+
 	}
+	
 	
 }

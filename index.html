@@ -50,11 +50,11 @@
 			</tr>
 			<tr>
 				<td><b>Trader Sr.</b>: Agora que você aprendeu a ganhar dinheiro, tem que aprender a perder dinheiro... Só assim você vai subir na carreira.</td>
-				<td class="meta"><label for="p_trdsr">Prejuízo total:</label> <progress id="p_trdsr"></progress>
+				<td class="meta">Prejuízo total: <span id="prejuizo_total">0</span>k<br><progress id="p_trdsr"></progress>
 			</tr>
 			<tr>
 				<td><b>Head Trader</b>: Ganhar e perder é coisa de Trader. Para ser um Head Trader, você precisa ser eficiente. Dobre seu dinheiro em um pregão.</td>
-				<td class="meta"><label for="p_head">Lucro em um jogo:</label> <progress id="p_head"></progress>
+				<td class="meta">Maior lucro: <span id="lucro_max">0</span>k<br><progress id="p_head"></progress>
 			</tr>
 			<tr>
 				<td><b>VP</b>: "Sell Me This Pen." Você chegou ao cargo máximo do FRLM3. Compartilhe seu PnL para todo mundo saber que você é TOPZEIRA.</td>
@@ -153,7 +153,7 @@ function atualiza_posicao(){
 	
 	var rnd = Math.random();
 	var variacao = normsInv(rnd, mercado, 0.075);
-	var vchoque = choque(Math.random());
+	var vchoque = jogo.choque(Math.random());
 	var novo_preco = (1+variacao)*precos[tick]*vchoque;
 	precos.push(novo_preco);
 	pnl = posicao * precos[tick] + cash - 100000;
@@ -241,18 +241,12 @@ function finalizar_jogo() {
 function dir_mercado(prob){
 	
 		if(prob < 0.1) 	return -0.015;
-   else if(prob < 0.9) 	return  0.020;
+   else if(prob < 0.9) 	return  0.015;
    else					return  0.035;
 	
 }
 
-function choque(prob){
-	
-  		 if(prob < 0.02) return 0.7500;
-	else if(prob < 0.98) return 1.0000;
-	else				 return 1.3333;
 
-}
 
 function out(valor, id){
 	document.getElementById(id).innerHTML = valor;
