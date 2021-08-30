@@ -221,11 +221,16 @@ function vender(){
 
 function finalizar_jogo() {
 	
-	if(parseInt(localStorage.getItem('cargo')) == 2 && pnl > 0){
+	if(parseInt(localStorage.getItem('cargo')) > 1 && pnl > 0){
 		localStorage.setItem('lucro_trdjr', parseFloat(localStorage.getItem('lucro_trdjr'))+pnl);
 	}
-	if(parseInt(localStorage.getItem('cargo')) == 3 && pnl < 0){
+	if(parseInt(localStorage.getItem('cargo')) > 2 && pnl < 0){
 		localStorage.setItem('lucro_trdsr', parseFloat(localStorage.getItem('lucro_trdsr'))-pnl);
+	}
+	if(parseInt(localStorage.getItem('cargo')) > 3){
+		if(pnl > parseFloat(localStorage.getItem('lucro_head'))) {
+			localStorage.setItem('lucro_head', pnl);
+		}
 	}
 	jogo.calcular_cargo();
 	monta_grafico();

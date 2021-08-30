@@ -4,9 +4,9 @@
 var n = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }),
 	q = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0, });
 	
-var dev_tools = {
+var jogo = {
 	
-	reset: function(){
+	zerar: function(){
 		localStorage.setItem('cargo', 0);
 		localStorage.setItem('operacoes', 0);
 		localStorage.setItem('dias_ponta', 0);
@@ -15,38 +15,29 @@ var dev_tools = {
 		localStorage.setItem('lucro_trdsr', 0);
 		localStorage.setItem('lucro_head', 0);
 		jogo.calcular_cargo();
-	}
-	
-}
-
-var jogo = {
+		jogo.atualizar_barras_progresso();
+	},
 
 	metas: {
 		estag: 50,
-		ponta: 9,
+		ponta: 10,
 		trd_jr: 1000000,
 		trd_sr: 2500000,
-		head: 100000
+		head: 300000
 	},
 	
 	cargos: [
-		'Estagiário',
-		'Ponta-de-mesa',
-		'Trader Jr.',
-		'Trader Sr.',
-		'Head Trader'
+		'Estagiário',	// 0
+		'Ponta-de-mesa',// 1
+		'Trader Jr.',	// 2
+		'Trader Sr.',	// 3
+		'Head Trader',	// 4
+		'VP'			// 5
 	],
 	
 	inicia_storage: function () {
 		if(!localStorage.getItem('cargo')) {
-			localStorage.setItem('cargo', 0);
-			localStorage.setItem('operacoes', 0);
-			localStorage.setItem('dias_ponta', 0);
-			localStorage.setItem('dias_total', 0);
-			localStorage.setItem('lucro_trdjr', 0);
-			localStorage.setItem('lucro_trdsr', 0);
-			localStorage.setItem('lucro_head', 0);
-			jogo.calcular_cargo();
+			jogo.zerar();
 		} else {
 			jogo.calcular_cargo();
 		}
@@ -78,9 +69,11 @@ var jogo = {
 		document.getElementById("p_trdsr").max = jogo.metas.trd_sr;
 		out(q.format(prejuizo_total/1000), "prejuizo_total");
 		
+		// Lucro máximo
 		var lucro_max = parseInt(localStorage.getItem('lucro_head'));
 		document.getElementById("p_head").value = lucro_max;
 		document.getElementById("p_head").max = jogo.metas.head;
+		out(q.format(lucro_max/1000), "lucro_max");
 	},
 	
 	calcular_cargo: function () {
@@ -88,20 +81,38 @@ var jogo = {
 		var cargo_atual = parseInt(localStorage.getItem('cargo'));
 		switch (true) {
 			case cargo_atual == 0: // Estagiário
-				if(parseInt(localStorage.getItem('operacoes')) > jogo.metas.estag){
+				if(parseInt(localStorage.getItem('operacoes')) >= jogo.metas.estag){ 
 					cargo_atual = 1;
 				}
 				break;
 				
 			case cargo_atual == 1: // Ponta-de-mesa
-				if(parseInt(localStorage.getItem('dias_ponta')) > jogo.metas.ponta){
+				if(parseInt(localStorage.getItem('dias_ponta')) >= jogo.metas.ponta){
 					cargo_atual = 2;
+				}
+				break;
+				
+			case cargo_atual == 2: // Trader Jr.
+				if(parseInt(localStorage.getItem('lucro_trdjr')) >= jogo.metas.trd_jr){
+					cargo_atual = 3;
+				}
+				break;
+				
+			case cargo_atual == 3: // Trader Sr.
+				if(parseInt(localStorage.getItem('lucro_trdsr')) >= jogo.metas.trd_sr){
+					cargo_atual = 4;
+				}
+				break;
+				
+			case cargo_atual == 4: // Head Trader
+				if(parseInt(localStorage.getItem('lucro_head')) >= jogo.metas.head){
+					cargo_atual = 5;
 				}
 				break;
 		}
 		localStorage.setItem('cargo', cargo_atual);
 		out(jogo.cargos[cargo_atual], 'cargo');
-		
+
 	},
 	
 	stop_loss: function () {
