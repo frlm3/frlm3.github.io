@@ -90,30 +90,35 @@ var jogo = {
 			case cargo_atual == 0: // Estagiário
 				if(parseInt(localStorage.getItem('operacoes')) >= jogo.metas.estag){ 
 					cargo_atual = 1;
+					alert("Você foi promovido!");
 				}
 				break;
 				
 			case cargo_atual == 1: // Ponta-de-mesa
 				if(parseInt(localStorage.getItem('dias_ponta')) >= jogo.metas.ponta){
 					cargo_atual = 2;
+					alert("Você foi promovido!");
 				}
 				break;
 				
 			case cargo_atual == 2: // Trader Jr.
 				if(parseInt(localStorage.getItem('lucro_trdjr')) >= jogo.metas.trd_jr){
 					cargo_atual = 3;
+					alert("Você foi promovido!");
 				}
 				break;
 				
 			case cargo_atual == 3: // Trader Sr.
 				if(parseInt(localStorage.getItem('lucro_trdsr')) >= jogo.metas.trd_sr){
 					cargo_atual = 4;
+					alert("Você foi promovido!");
 				}
 				break;
 				
 			case cargo_atual == 4: // Head Trader
 				if(parseInt(localStorage.getItem('lucro_head')) >= jogo.metas.head){
 					cargo_atual = 5;
+					alert("Você foi promovido!");
 				}
 				break;
 		}
