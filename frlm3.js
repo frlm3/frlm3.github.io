@@ -14,6 +14,15 @@ var jogo = {
 		localStorage.setItem('lucro_trdjr', 0);
 		localStorage.setItem('lucro_trdsr', 0);
 		localStorage.setItem('lucro_head', 0);
+		
+		/*
+		document.getElementById("ajuda_ponta").style.display = 'table-row';
+		if(cargo_atual > 1) { document.getElementById("ajuda_trdjr").style.display = 'table-row'; }
+		if(cargo_atual > 2) { document.getElementById("ajuda_trdsr").style.display = 'table-row'; }
+		if(cargo_atual > 3) { document.getElementById("ajuda_head").style.display = 'table-row'; }
+		if(cargo_atual > 4) { document.getElementById("ajuda_vp").style.display = 'table-row'; }	
+		*/
+		
 		jogo.calcular_cargo();
 		jogo.atualizar_barras_progresso();
 	},
@@ -112,16 +121,19 @@ var jogo = {
 		}
 		localStorage.setItem('cargo', cargo_atual);
 		out(jogo.cargos[cargo_atual], 'cargo');
+		
+		if(cargo_atual > 0) { document.getElementById("ajuda_ponta").style.display = 'table-row'; }
+		if(cargo_atual > 1) { document.getElementById("ajuda_trdjr").style.display = 'table-row'; }
+		if(cargo_atual > 2) { document.getElementById("ajuda_trdsr").style.display = 'table-row'; }
+		if(cargo_atual > 3) { document.getElementById("ajuda_head").style.display = 'table-row'; }
+		if(cargo_atual > 4) { document.getElementById("ajuda_vp").style.display = 'table-row'; }		
 
 	},
 	
 	stop_loss: function () {
 		
 		alert("Seu stop loss foi acionado! Cuidados com as posições vendidas...");
-		localStorage.setItem('cargo', 0);
-		localStorage.setItem('operacoes', 0);
-		localStorage.setItem('dias_ponta', 0);
-		localStorage.setItem('dias_total', 0);
+		jogo.zerar();
 		finalizar_jogo();
 		
 	},
@@ -132,7 +144,14 @@ var jogo = {
 		else if(prob < 0.98) return 1.0000;
 		else				 return 1.3333;
 
-	}
+	},
 	
+	dir_mercado: function (prob) {
+	
+			if(prob < 0.1) 	return -0.015;
+	   else if(prob < 0.9) 	return  0.015;
+	   else					return  0.035;
+	
+	}
 	
 }

@@ -40,23 +40,23 @@
 				<td><b>Estagiário</b>: Suas atribuições serão bater as operações boletadas pelos pontas-de-mesa e buscar na padoca o pingado com chapado viajante para os Traders.</td>
 				<td class="meta">Boletas batidas: <span id="num_ope">0</span><br><progress id="p_estag"></progress></td>
 			</tr>
-			<tr>
+			<tr id="ajuda_ponta">
 				<td><b>Ponta-de-mesa</b>: Responsável por boletar as operações dos Traders, e mandar o Estagiário bater as boletas. Seu sonho é virar um Trader, mas para isso deverá acumular experiência no mercado.</td>
 				<td class="meta">Pregões: <span id="num_preg">0</span><br><progress id="p_ponta"></progress></td>
 			</tr>
-			<tr>
+			<tr id="ajuda_trdjr">
 				<td><b>Trader Jr.</b>: É como se fosse um estagiário, mas um erro seu já custa dinheiro. Não fica mais com cara de perdido quando alguém diz que ficou tomado em bola 45 e dado em faca 26. Ganhe um trocado para fazer nome no mercado.</td>
 				<td class="meta">Lucro total: <span id="lucro_total">0</span>k<br><progress id="p_trdjr"></progress></td>
 			</tr>
-			<tr>
+			<tr id="ajuda_trdsr">
 				<td><b>Trader Sr.</b>: Agora que você aprendeu a ganhar dinheiro, tem que aprender a perder dinheiro... Só assim você vai subir na carreira.</td>
 				<td class="meta">Prejuízo total: <span id="prejuizo_total">0</span>k<br><progress id="p_trdsr"></progress>
 			</tr>
-			<tr>
+			<tr id="ajuda_head">
 				<td><b>Head Trader</b>: Ganhar e perder é coisa de Trader. Para ser um Head Trader, você precisa ser eficiente. Dobre seu dinheiro em um pregão.</td>
 				<td class="meta">Maior lucro: <span id="lucro_max">0</span>k<br><progress id="p_head"></progress>
 			</tr>
-			<tr>
+			<tr id="ajuda_vp">
 				<td><b>VP</b>: "Sell Me This Pen." Você chegou ao cargo máximo do FRLM3. Compartilhe seu PnL para todo mundo saber que você é TOPZEIRA.</td>
 				<td class="meta"></td>
 			</tr>
@@ -116,7 +116,7 @@ var refreshIntervalId,
 	pnl = 0,
 	rodadas = 60,
 	direcao = 0,
-	mercado = dir_mercado(Math.random());
+	mercado = jogo.dir_mercado(Math.random());
 
 function iniciar_jogo(){
 
@@ -132,7 +132,7 @@ function iniciar_jogo(){
 	posicao = 0;
 	pnl = 0;
 	direcao = 0;
-	mercado = dir_mercado(Math.random());
+	mercado = jogo.dir_mercado(Math.random());
 	console.log(mercado);
 
 	document.getElementById("iniciar").disabled = true;
@@ -140,7 +140,7 @@ function iniciar_jogo(){
 	document.getElementById("vender").disabled = false;
 
 	atualiza_posicao();
-	refreshIntervalId = setInterval(atualiza_posicao, 1000);
+	refreshIntervalId = setInterval(atualiza_posicao, 750);
 		
 }
 
@@ -165,6 +165,7 @@ function atualiza_posicao(){
 
 function atualiza_tela(){
 
+	
 	jogo.atualizar_barras_progresso();
 	out(tick, 'tick');
 	out(n.format(precos[tick]), "preco");
@@ -243,13 +244,7 @@ function finalizar_jogo() {
 	
 }
 
-function dir_mercado(prob){
-	
-		if(prob < 0.1) 	return -0.015;
-   else if(prob < 0.9) 	return  0.015;
-   else					return  0.035;
-	
-}
+
 
 
 
