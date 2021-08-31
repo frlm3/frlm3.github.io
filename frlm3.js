@@ -15,13 +15,11 @@ var jogo = {
 		localStorage.setItem('lucro_trdsr', 0);
 		localStorage.setItem('lucro_head', 0);
 		
-		/*
-		document.getElementById("ajuda_ponta").style.display = 'table-row';
-		if(cargo_atual > 1) { document.getElementById("ajuda_trdjr").style.display = 'table-row'; }
-		if(cargo_atual > 2) { document.getElementById("ajuda_trdsr").style.display = 'table-row'; }
-		if(cargo_atual > 3) { document.getElementById("ajuda_head").style.display = 'table-row'; }
-		if(cargo_atual > 4) { document.getElementById("ajuda_vp").style.display = 'table-row'; }	
-		*/
+		document.getElementById("ajuda_ponta").style.display = 'none';
+		document.getElementById("ajuda_trdjr").style.display = 'none';
+		document.getElementById("ajuda_trdsr").style.display = 'none';
+		document.getElementById("ajuda_head").style.display = 'none';
+		document.getElementById("ajuda_vp").style.display = 'none';	
 		
 		jogo.calcular_cargo();
 		jogo.atualizar_barras_progresso();
@@ -41,7 +39,7 @@ var jogo = {
 		'Trader Jr.',	// 2
 		'Trader Sr.',	// 3
 		'Head Trader',	// 4
-		'VP'			// 5
+		'VP da tesouraria' // 5
 	],
 	
 	inicia_storage: function () {
