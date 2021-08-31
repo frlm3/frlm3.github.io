@@ -4,7 +4,6 @@ body {
 	color: #FF9E2B;
 	font-weight: 500;
 	font-size: small;
-	touch-action: manipulation;
 }
 svg { color: #000000; }
 .laranja {
